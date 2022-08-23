@@ -2,9 +2,17 @@
 using System.IO;
 using System.Reflection;
 using System.Text;
+using System;
 
 namespace TechJobsConsole
 {
+    public static class StringExtensions
+    {
+        public static bool ContainsCaseInsensitive(this string source, string substring)
+        {
+            return source?.IndexOf(substring, StringComparison.OrdinalIgnoreCase) > -1;
+        }
+    }
     class JobData
     {
         static List<Dictionary<string, string>> AllJobs = new List<Dictionary<string, string>>();
@@ -49,7 +57,7 @@ namespace TechJobsConsole
             {
                 string aValue = row[column];
 
-                if (aValue.Contains(value))
+                if (aValue.ContainsCaseInsensitive(value))
                 {
                     jobs.Add(row);
                 }
@@ -138,5 +146,28 @@ namespace TechJobsConsole
 
             return rowValues.ToArray();
         }
+
+
+        public static List<Dictionary<string, string>> FindByValue(string searchTerm, List<Dictionary<string, string>> allJobs)
+        {
+            LoadData();
+            List<Dictionary<string, string>> jobs = new List<Dictionary<string, string>>();
+            foreach (Dictionary<string, string> jobDescription in allJobs)
+            {
+                foreach (KeyValuePair<string, string> value in jobDescription)
+                {
+                    if(value.Value.ContainsCaseInsensitive(searchTerm))
+                    {
+                       
+                        jobs.Add(jobDescription);
+                        continue;
+                    } 
+                }
+
+            }
+            return jobs;
+        }
+
+
     }
 }
