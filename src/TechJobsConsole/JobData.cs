@@ -158,9 +158,11 @@ namespace TechJobsConsole
                 {
                     if(value.Value.ContainsCaseInsensitive(searchTerm))
                     {
-                       
-                        jobs.Add(jobDescription);
-                        continue;
+                        if (!jobs.Contains(jobDescription))
+                        {
+                            jobs.Add(jobDescription);
+                            continue;
+                        }
                     } 
                 }
 
